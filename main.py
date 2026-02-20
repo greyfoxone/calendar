@@ -1,5 +1,6 @@
 import sys
 from datetime import datetime
+
 from lib.calendar import CalendarTableWidget
 from lib.indent_logger import class_debug_log
 from PyQt6.QtCore import QTimer
@@ -10,15 +11,30 @@ from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
 
 
+class TimeLabel(QLabel):
+    def __init__(self):
+        super().__init__()
+        self.setStyleSheet(
+            """
+            font-size: 80px;
+            font-weight: bold;
+        """
+        )
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_time)
+        self.timer.start(60000)
+
+    def update_time(self):
+        now = datetime.now()
+        self.setText(now.strftime("%H:%M"))
+
+
 @class_debug_log
 class ClockCalendarDesklet(QWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
         self.update_clock()
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_clock)
-        self.timer.start(60000)  # Update every minute
 
     def init_ui(self):
         self.create_ui()
@@ -26,13 +42,7 @@ class ClockCalendarDesklet(QWidget):
         self.adjustSize()
 
     def create_ui(self):
-        self.time_label = QLabel()
-        self.time_label.setStyleSheet(
-            """
-            font-size: 80px;
-            font-weight: bold;
-        """
-        )
+        self.time_label = TimeLabel()
 
         self.date_label = QLabel()
         self.date_label.setStyleSheet(
@@ -70,7 +80,6 @@ class ClockCalendarDesklet(QWidget):
 
     def update_clock(self):
         now = datetime.now()
-        self.time_label.setText(now.strftime("%H:%M"))
         self.date_label.setText(now.strftime("%Y-%m-%d"))
         self.weekday_label.setText(now.strftime("%A"))
 

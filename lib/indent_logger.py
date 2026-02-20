@@ -96,8 +96,8 @@ class PrettyStack:
         common_prefix_len = len(set(filename).intersection(last_filename))
         return filename[:common_prefix_len], filename[common_prefix_len:]
 
-    def __repr__(self):
-        return self.get()
+#    def __repr__(self):
+#        return self.get()
 
     def __str__(self):
         return self.get()
