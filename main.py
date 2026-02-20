@@ -3,10 +3,11 @@ from datetime import datetime
 
 from lib.calendar import MonthTableWidget
 from lib.indent_logger import class_debug_log
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6.QtWidgets import QLabel
+from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
 
@@ -36,8 +37,9 @@ class CurrentDay(QWidget):
             font-size: 40%;
         """
         )
-        layout.addWidget(self.date_label)
-        layout.addWidget(self.weekday_label)
+        layout.addWidget(self.date_label, 0)
+        layout.addWidget(self.weekday_label, 0)
+        layout.addStretch(1)
         self.setLayout(layout)
 
     def update(self):
@@ -47,7 +49,7 @@ class CurrentDay(QWidget):
         self.weekday_label.setText(now.strftime("%A"))
 
 
-class TimeLabel(QLabel):
+class TimeClock(QLabel):
     def __init__(self):
         super().__init__()
         self.setStyleSheet(
@@ -59,6 +61,8 @@ class TimeLabel(QLabel):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(60000)
+        self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.update()
 
     def update(self):
@@ -81,19 +85,21 @@ class ClockCalendarDesklet(QWidget):
         self.adjustSize()
 
     def create_ui(self):
-        self.time_label = TimeLabel()
+        self.time_label = TimeClock()
         self.current_day = CurrentDay()
         self.calendar_table = MonthTableWidget(datetime.now().year, datetime.now().month)
 
     def layout_ui(self):
         layout = QVBoxLayout()
 
-        clock_layout = QHBoxLayout()
-        clock_layout.addWidget(self.time_label)
-        clock_layout.addWidget(self.current_day)
-        layout.addLayout(clock_layout)
+        header_layout = QHBoxLayout()
+        header_layout.addWidget(self.time_label,0)
+        header_layout.addWidget(self.current_day,0)
+        header_layout.addStretch(1)
+        layout.addLayout(header_layout)
 
         layout.addWidget(self.calendar_table)
+        layout.addStretch(1)
         self.setLayout(layout)
 
 

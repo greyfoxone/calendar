@@ -4,7 +4,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtWidgets import QTableWidget
-from PyQt6.QtWidgets import QTableWidgetItem
+from PyQt6.QtWidgets import QTableWidgetItem,QAbstractScrollArea
 
 
 class MonthTableWidget(QTableWidget):
@@ -24,7 +24,8 @@ class MonthTableWidget(QTableWidget):
         #        """
         #        )
         self.verticalHeader().setVisible(False)
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        self.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.update_calendar(year, month)
 
     def mark_day(self, day: int):
@@ -42,6 +43,7 @@ class MonthTableWidget(QTableWidget):
         self.clear()
         self._setup_header()
         self._render_month_days(year, month)
+        self.adjustSize()
 
     def _setup_header(self):
         weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
