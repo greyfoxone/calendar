@@ -1,68 +1,14 @@
 import sys
 from datetime import datetime
-
-from PyQt6.QtCore import Qt
+from lib.calendar import CalendarTableWidget
+from lib.indent_logger import class_debug_log
 from PyQt6.QtCore import QTimer
-from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6.QtWidgets import QLabel
-from PyQt6.QtWidgets import QTableWidget
-from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
-from lib.indent_logger import class_debug_log
 
-
-class CalendarTableWidget(QTableWidget):
-    def __init__(self):
-        super().__init__(6, 7)
-        self.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.setStyleSheet(
-            """
-            border: none;
-            font-size: 12px;
-            background-color: rgba(30, 30, 30, 0.8);
-            color: #f0f0f0;
-            border-radius: 10px;
-            padding: 15px;
-        """
-        )
-        self.update_calendar()
-
-    def update_calendar(self):
-        today = datetime.now()
-        year, month = today.year, today.month
-
-        self.clear()
-
-        weekdays = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"]
-        for i, day in enumerate(weekdays):
-            item = QTableWidgetItem(day)
-            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.setHorizontalHeaderItem(i, item)
-
-        first_day = datetime(year, month, 1)
-        start_day = (first_day.weekday() + 1) % 7
-        days_in_month = (datetime(year, month + 1, 1) - datetime(year, month, 1)).days
-
-        day = 1
-        for week in range(6):
-            for dow in range(7):
-                if week == 0 and dow < start_day:
-                    continue
-                if day > days_in_month:
-                    break
-
-                item = QTableWidgetItem(str(day))
-                item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-                self.setItem(week, dow, item)
-
-                if day == today.day:
-                    item.setBackground(QColor("#007bff"))
-                    item.setForeground(QColor("white"))
-
-                day += 1
 
 @class_debug_log
 class ClockCalendarDesklet(QWidget):
