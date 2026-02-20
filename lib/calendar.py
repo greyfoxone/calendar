@@ -2,6 +2,7 @@ from datetime import datetime
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtWidgets import QTableWidget
 from PyQt6.QtWidgets import QTableWidgetItem
 
@@ -20,6 +21,7 @@ class CalendarTableWidget(QTableWidget):
             padding: 15px;
         """
         )
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.update_calendar()
 
     def update_calendar(self):
