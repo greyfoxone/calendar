@@ -16,8 +16,6 @@ __all__ = [
 ]
 DECORATED_FUNCTIONS = set()
 
-logger = logging.getLogger(__name__)
-
 
 def truncate(value, max_len=200):
     s = str(value)
@@ -180,8 +178,8 @@ def debug_log(method):
     return wrapped
 
 
-def class_debug_log(cls, disable=False):
-    if disable:
+def class_debug_log(cls, skip=False):
+    if skip:
         return cls
     if logger.level == logging.DEBUG:
         indent_logger.log(f"@class_debug_lo {cls}")

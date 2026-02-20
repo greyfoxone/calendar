@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import QTableWidget
 from PyQt6.QtWidgets import QTableWidgetItem
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget
+from lib.indent_logger import class_debug_log
 
 
 class CalendarTableWidget(QTableWidget):
@@ -63,7 +64,7 @@ class CalendarTableWidget(QTableWidget):
 
                 day += 1
 
-
+@class_debug_log
 class ClockCalendarDesklet(QWidget):
     def __init__(self):
         super().__init__()
