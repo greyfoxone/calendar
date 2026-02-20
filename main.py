@@ -1,7 +1,7 @@
 import sys
 from datetime import datetime
 
-from lib.calendar import CalendarTableWidget
+from lib.calendar import MonthTableWidget
 from lib.indent_logger import class_debug_log
 from PyQt6.QtCore import QTimer
 from PyQt6.QtWidgets import QApplication
@@ -41,6 +41,7 @@ class CurrentDay(QWidget):
         self.setLayout(layout)
 
     def update(self):
+        super().update()
         now = datetime.now()
         self.date_label.setText(now.strftime("%Y-%m-%d"))
         self.weekday_label.setText(now.strftime("%A"))
@@ -61,6 +62,7 @@ class TimeLabel(QLabel):
         self.update()
 
     def update(self):
+        super().update()
         now = datetime.now()
         self.setText(now.strftime("%H:%M"))
 
@@ -74,12 +76,14 @@ class ClockCalendarDesklet(QWidget):
     def init_ui(self):
         self.create_ui()
         self.layout_ui()
+        today = datetime.now()
+        self.calendar_table.mark_day(today.day)
         self.adjustSize()
 
     def create_ui(self):
         self.time_label = TimeLabel()
         self.current_day = CurrentDay()
-        self.calendar_table = CalendarTableWidget()
+        self.calendar_table = MonthTableWidget(datetime.now().year, datetime.now().month)
 
     def layout_ui(self):
         layout = QVBoxLayout()
