@@ -16,7 +16,7 @@ class ClockCalendarDesklet(QWidget):
         super().__init__()
         self.init_ui()
         self.setWindowFlags(
-            Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.WindowTransparentForInput
+            Qt.WindowType.FramelessWindowHint
         )
 
     def init_ui(self):
