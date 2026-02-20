@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+PYTHON=python3
+VENV=".venv"
+
+[ ! -d "$VENV" ] && $PYTHON -m venv "$VENV"
+. "$VENV/bin/activate"
+pip install --upgrade pip
+pip install -r requirements.txt
+python calendar.py
