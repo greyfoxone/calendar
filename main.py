@@ -16,14 +16,19 @@ class ClockCalendarDesklet(QWidget):
         super().__init__()
         self.init_ui()
         self.setWindowFlags(
-            Qt.WindowType.FramelessWindowHint
+            Qt.WindowType.FramelessWindowHint |
+            Qt.WindowType.WindowStaysOnTopHint
         )
+        self._calendar_visible = True
 
     def init_ui(self):
         self.create_ui()
         self.layout_ui()
+        self.connect_signals()
         today = datetime.now()
         self.calendar_table.mark_day(today.day)
+        
+
         self.adjustSize()
 
     def create_ui(self):
@@ -36,10 +41,18 @@ class ClockCalendarDesklet(QWidget):
         layout.addWidget(self.calendar_table)
         layout.addStretch(1)
         self.setLayout(layout)
-
+        
+    def connect_signals(self):
+        self.header_widget.clicked.connect(self.toggle_calendar)
+        
+    def toggle_calendar(self,status):
+        self._calendar_visible = not self._calendar_visible
+        self.calendar_table.setVisible(self._calendar_visible)
+        self.adjustSize()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     desklet = ClockCalendarDesklet()
     desklet.show()
     sys.exit(app.exec())
+    

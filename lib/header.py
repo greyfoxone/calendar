@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QHBoxLayout
 from PyQt6.QtWidgets import QLabel
 from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtWidgets import QVBoxLayout
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QAbstractButton
 
 
 class CurrentDay(QWidget):
@@ -68,7 +68,7 @@ class TimeClock(QLabel):
         self.setText(now.strftime("%H:%M"))
 
 
-class HeaderWidget(QWidget):
+class HeaderWidget(QAbstractButton):
     def __init__(self):
         super().__init__()
         self.init_ui()
