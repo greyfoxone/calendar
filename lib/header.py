@@ -57,7 +57,7 @@ class TimeClock(QLabel):
         )
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
-        self.timer.start(60000)
+        self.timer.start(1000)
         self.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
         self.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.update()
