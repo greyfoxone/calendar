@@ -1,3 +1,4 @@
+
 from datetime import datetime
 
 from PyQt6.QtCore import Qt
@@ -7,8 +8,10 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtWidgets import QVBoxLayout
 from PyQt6.QtWidgets import QWidget, QAbstractButton
+from lib.indent_logger import class_debug_log
 
 
+@class_debug_log
 class CurrentDay(QWidget):
     def __init__(self):
         super().__init__()
@@ -67,7 +70,7 @@ class TimeClock(QLabel):
         now = datetime.now()
         self.setText(now.strftime("%H:%M"))
 
-
+@class_debug_log
 class HeaderWidget(QAbstractButton):
     def __init__(self):
         super().__init__()

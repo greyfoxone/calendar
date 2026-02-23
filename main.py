@@ -24,8 +24,8 @@ class ClockCalendarDesklet(QWidget):
         self.create_ui()
         self.layout_ui()
         self.connect_signals()
-        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.show_context_menu)
+        self.header_widget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.header_widget.customContextMenuRequested.connect(self.show_context_menu)
         today = datetime.now()
         self.calendar_table.mark_day(today.day)
 
@@ -66,6 +66,8 @@ class ClockCalendarDesklet(QWidget):
         sw = StopwatchWidget(mins, text.strip())
         self.layout.addWidget(sw)
         sw.show()
+        sw.destroyed.connect(self.adjustSize)
+        
 
 
 if __name__ == "__main__":
