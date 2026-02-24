@@ -1,10 +1,12 @@
 import calendar
+from datetime import datetime
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import QAbstractScrollArea
 from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtWidgets import QTableWidget
-from PyQt6.QtWidgets import QTableWidgetItem,QAbstractScrollArea
+from PyQt6.QtWidgets import QTableWidgetItem
 
 
 class MonthTableWidget(QTableWidget):
@@ -13,22 +15,12 @@ class MonthTableWidget(QTableWidget):
         self.year = year
         self.month = month
         self.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        #        self.setStyleSheet(
-        #            """
-        #            border: none;
-        #            font-size: 12px;
-        #            background-color: rgba(30, 30, 30, 0.8);
-        #            color: #ffffff;
-        #            border-radius: 10px;
-        #            padding: 15px;
-        #        """
-        #        )
         self.verticalHeader().setVisible(False)
         self.setSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
         self.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.update_calendar(year, month)
 
-    def mark_day(self, day: int):
+    def mark_day(self, day: int, color: QColor):
         if not 1 <= day <= 31:
             return
         first_weekday = calendar.monthrange(self.year, self.month)[0]
@@ -37,7 +29,17 @@ class MonthTableWidget(QTableWidget):
         if 0 <= week < 6 and 0 <= dow < 7:
             item = self.item(week, dow)
             if item:
-                item.setBackground(QColor(255, 0, 0))
+                item.setBackground(color)
+
+    def mark_events(self, events, color):
+        today = datetime.now()
+        current_month = today.month
+        current_year = today.year
+
+        for event in events:
+            start_date = event.start
+            if start_date.month == current_month and start_date.year == current_year:
+                self.mark_day(start_date.day, color)
 
     def update_calendar(self, year: int, month: int):
         self.clear()

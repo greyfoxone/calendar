@@ -22,19 +22,22 @@ class CurrentDay(QWidget):
         self.update()
 
     def init_ui(self):
+        self_events_container = QHBoxLayout()
         layout = QVBoxLayout()
         self.date_label = QLabel()
+        self.date_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.date_label.setStyleSheet(
             """
             margin-top: 11px;
-            font-size: 60%;
+            font-size:80;
         """
         )
         self.weekday_label = QLabel()
+        self.weekday_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.weekday_label.setStyleSheet(
             """
             color: #cc6666;
-            font-size: 40%;
+            font-size: 20%;
         """
         )
         layout.addWidget(self.date_label, 0)
@@ -45,7 +48,7 @@ class CurrentDay(QWidget):
     def update(self):
         super().update()
         now = datetime.now()
-        self.date_label.setText(now.strftime("%Y-%m-%d"))
+        self.date_label.setText(now.strftime("%d. %b"))
         self.weekday_label.setText(now.strftime("%A"))
 
 
@@ -75,6 +78,8 @@ class HeaderWidget(QAbstractButton):
     def __init__(self):
         super().__init__()
         self.init_ui()
+                
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update)
         self.timer.start(60000)
@@ -84,9 +89,9 @@ class HeaderWidget(QAbstractButton):
         layout = QHBoxLayout()
         self.time_label = TimeClock()
         self.current_day = CurrentDay()
+        layout.addStretch(1)
         layout.addWidget(self.time_label)
         layout.addWidget(self.current_day)
-        layout.addStretch(1)
         self.setLayout(layout)
 
     def update(self):
